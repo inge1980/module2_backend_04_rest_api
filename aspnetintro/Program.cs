@@ -1,6 +1,7 @@
 // To use:
 // http://localhost:5179/weatherforecast
 // http://localhost:5179/swagger/index.html
+using System.Reflection;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,7 +10,13 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddOpenApi();
 
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(options =>
+{
+    var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+    var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+
+    options.IncludeXmlComments(xmlPath);
+});
 
 var app = builder.Build();
 
@@ -44,7 +51,21 @@ app.MapGet("/weatherforecast", () =>
         .ToArray();
     return forecast;
 })
-.WithName("GetWeatherForecast");
+   .WithName("GetWeatherForecast")
+   .WithSummary("Returns some weather")
+   .WithDescription("Simple test endpoint for weather");
+
+/// <summary>
+/// Henter en enkel testmelding.
+/// </summary>
+/// <returns>En tekststreng</returns>
+app.MapGet("/hello", () => new
+    {
+        Message = "Hello World"
+    })
+   .WithName("GetHello")
+   .WithSummary("Returns a greeting")
+   .WithDescription("Simple test endpoint for the world");
 
 app.Run();
 
