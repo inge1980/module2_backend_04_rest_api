@@ -1,5 +1,6 @@
 // To use:
 // http://localhost:5179/weatherforecast
+// http://localhost:5179/swagger/index.html
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -7,15 +8,24 @@ var builder = WebApplication.CreateBuilder(args);
 // Learn more about configuring OpenAPI at https://aka.ms/aspnet/openapi
 builder.Services.AddOpenApi();
 
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+
 var app = builder.Build();
+
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
+
+    app.UseSwagger();
+    app.UseSwaggerUI();
 }
 
 app.UseHttpsRedirection();
+
+app.UseStaticFiles();
 
 var summaries = new[]
 {
