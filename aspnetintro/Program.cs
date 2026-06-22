@@ -1,3 +1,6 @@
+// To use:
+// http://localhost:5179/weatherforecast
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
