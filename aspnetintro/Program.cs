@@ -26,6 +26,10 @@ if (app.Environment.IsDevelopment())
 {
     app.MapOpenApi();
 
+    // Scalar pakke istedet for Swagger?
+    // command: dotnet add package Scalar.AspNetCore
+    // code: app.MapScalarApiReference();
+
     app.UseSwagger();
     app.UseSwaggerUI();
 }
