@@ -33,6 +33,7 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseStaticFiles();
+app.MapFallbackToFile("index.html"); // evt. 404.html
 
 var summaries = new[]
 {
