@@ -1,6 +1,6 @@
 namespace aspnetintro.Model;
 
-public enum TaskStatus
+public enum TaskItemStatus
 {
     Open,
     Completed

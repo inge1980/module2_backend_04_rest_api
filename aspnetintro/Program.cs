@@ -10,7 +10,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddOpenApi();
 
 builder.Services.AddEndpointsApiExplorer();
-//builder.Services.AddControllers();
+builder.Services.AddControllers();
 builder.Services.AddSwaggerGen(options =>
 {
     var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
@@ -35,7 +35,7 @@ app.UseHttpsRedirection();
 
 app.UseStaticFiles();
 app.MapFallbackToFile("index.html"); // evt. 404.html
-//app.MapControllers();
+app.MapControllers();
 
 var summaries = new[]
 {
@@ -58,10 +58,10 @@ app.MapGet("/weatherforecast", () =>
    .WithSummary("Returns some weather")
    .WithDescription("Simple test endpoint for weather");
 
-/// <summary>
-/// Henter en enkel testmelding.
-/// </summary>
-/// <returns>En tekststreng</returns>
+// <summary>
+// Henter en enkel testmelding.
+// </summary>
+// <returns>En tekststreng</returns>
 app.MapGet("/hello", () => new
     {
         Message = "Hello World"
