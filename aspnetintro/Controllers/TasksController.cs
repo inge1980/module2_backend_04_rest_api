@@ -12,8 +12,8 @@ public class TasksController : ControllerBase
         new TaskItem
         {
             Id = 1,
-            Title = "Learn ASP.NET Core",
-            Description = "Build REST API with Controllers",
+            Title = "Fix up the boat",
+            Description = "Fix all stuff that broke during the last vacation",
             Status = TaskItemStatus.Open,
             CreatedAt = DateTime.Now,
             DueDate = DateTime.Now.AddDays(7)
@@ -21,8 +21,8 @@ public class TasksController : ControllerBase
         new TaskItem
         {
             Id = 2,
-            Title = "Write README",
-            Description = "Document API endpoints",
+            Title = "Take a boating trip",
+            Description = "Vacation!",
             Status = TaskItemStatus.Completed,
             CreatedAt = DateTime.Now.AddDays(-2),
             DueDate = null
