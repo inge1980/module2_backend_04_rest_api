@@ -32,12 +32,12 @@
 ## Testing API Endpoints using swagger
 
 1. The API can be tested manually using Swagger UI.
-    ```bash
+    ```
     http://localhost:5179/swagger/index.html
     ```
 
-or using cURL / Postman / HTTPie with
-    ```bash
+    or using cURL / Postman / HTTPie with
+    ```
     http://localhost:5179/api/tasks/
     ```
 
