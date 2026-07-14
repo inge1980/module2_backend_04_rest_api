@@ -1,7 +1,4 @@
 ### P.U.L.S.E. - Personal Utility List & Scheduling Engine
-( http://localhost:5179/swagger/index.html )
-( http://localhost:5179/api/tasks/ )
-
 
 ## Features
 
@@ -37,6 +34,11 @@
 1. The API can be tested manually using Swagger UI.
     ```bash
     http://localhost:5179/swagger/index.html
+    ```
+
+or using cURL / Postman / HTTPie with:
+    ```bash
+    http://localhost:5179/api/tasks/
     ```
 
 2. Test the endpoints:
