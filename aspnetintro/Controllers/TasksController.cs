@@ -1,43 +1,24 @@
 using aspnetintro.Model;
+using aspnetintro.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace aspnetintro.Controllers;
 
 [Route("api/[controller]/")]
 [ApiController]
-public class TasksController : ControllerBase
+public class TasksController(ITaskService service) : ControllerBase
 {
-    private static readonly List<TaskItem> tasks = new()
-    {
-        new TaskItem
-        {
-            Id = 1,
-            Title = "Fix up the boat",
-            Description = "Fix all stuff that broke during the last vacation",
-            Status = TaskItemStatus.Open,
-            CreatedAt = DateTime.Now,
-            DueDate = DateTime.Now.AddDays(7)
-        },
-        new TaskItem
-        {
-            Id = 2,
-            Title = "Take a boating trip",
-            Description = "Vacation!",
-            Status = TaskItemStatus.Completed,
-            CreatedAt = DateTime.Now.AddDays(-2),
-            DueDate = null
-        }
-    };
-
 
     /// <summary>
     /// Henter alle oppgaver.
     /// </summary>
     [HttpGet]
     [ProducesResponseType(StatusCodes.Status200OK)]
-    public IEnumerable<TaskItem> Get()
+    public async Task<ActionResult<IEnumerable<TaskItem>>> Get()
     {
-        return tasks;
+        var tasks = await service.GetAllAsync();
+
+        return Ok(tasks);
     }
 
 
@@ -47,9 +28,9 @@ public class TasksController : ControllerBase
     [HttpGet("{id}")]
     [ProducesResponseType(StatusCodes.Status200OK)]
     [ProducesResponseType(StatusCodes.Status404NotFound)]
-    public IActionResult Get(int id)
+    public async Task<IActionResult> Get(int id)
     {
-        var task = tasks.FirstOrDefault(t => t.Id == id);
+        var task = await service.GetByIdAsync(id);
 
         if (task == null)
         {
@@ -66,9 +47,8 @@ public class TasksController : ControllerBase
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status201Created)]
     [ProducesResponseType(StatusCodes.Status400BadRequest)]
-    public IActionResult Post([FromBody] TaskItem task)
+    public async Task<IActionResult> Post(TaskItem task)
     {
-        // Enkel validering
         if (string.IsNullOrWhiteSpace(task.Title))
         {
             return BadRequest(new
@@ -77,34 +57,12 @@ public class TasksController : ControllerBase
             });
         }
 
-        if (task.DueDate.HasValue && task.DueDate < DateTime.Now)
-        {
-            return BadRequest(new
-            {
-                message = "Due date cannot be in the past"
-            });
-        }
+        var createdTask = await service.CreateAsync(task);
 
-
-        // Generer ny ID
-        task.Id = tasks.Count > 0 
-            ? tasks.Max(t => t.Id) + 1 
-            : 1;
-
-
-        // Sett opprettelsestidspunkt
-        task.CreatedAt = DateTime.Now;
-
-
-        // Legg til i minnet
-        tasks.Add(task);
-
-
-        // Returner 201 Created
         return CreatedAtAction(
             nameof(Get),
-            new { id = task.Id },
-            task
+            new { id = createdTask.Id },
+            createdTask
         );
     }
 }

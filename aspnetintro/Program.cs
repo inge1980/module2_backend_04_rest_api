@@ -2,6 +2,7 @@
 // http://localhost:5179/swagger/index.html
 // http://localhost:5179/api/tasks/
 using System.Reflection;
+using aspnetintro.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -11,6 +12,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Controllers
 builder.Services.AddControllers();
+builder.Services.AddSingleton<ITaskService, TaskService>();
 
 // Swagger
 builder.Services.AddEndpointsApiExplorer();
