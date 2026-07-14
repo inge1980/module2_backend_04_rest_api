@@ -22,6 +22,8 @@ public class RepairController(RepairRepository repository) : ControllerBase
     
     [HttpPost]
     [ProducesResponseType(StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(StatusCodes.Status500InternalServerError)]
     public IActionResult Post([FromBody] NewRepairFormDto dto)
     {
         var result = dto.BuildForm();
