@@ -36,7 +36,7 @@
     http://localhost:5179/swagger/index.html
     ```
 
-or using cURL / Postman / HTTPie with:
+or using cURL / Postman / HTTPie with
     ```bash
     http://localhost:5179/api/tasks/
     ```
