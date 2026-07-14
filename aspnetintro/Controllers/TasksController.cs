@@ -13,7 +13,7 @@ public class TasksController(ITaskService service) : ControllerBase
     /// Henter alle oppgaver.
     /// </summary>
     [HttpGet]
-    [ProducesResponseType(StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(IEnumerable<TaskItem>), StatusCodes.Status200OK)]
     public async Task<ActionResult<IEnumerable<TaskItem>>> Get()
     {
         var tasks = await service.GetAllAsync();
@@ -26,8 +26,8 @@ public class TasksController(ITaskService service) : ControllerBase
     /// Henter én oppgave basert på id.
     /// </summary>
     [HttpGet("{id}")]
-    [ProducesResponseType(StatusCodes.Status200OK)]
-    [ProducesResponseType(StatusCodes.Status404NotFound)]
+    [ProducesResponseType(typeof(TaskItem), StatusCodes.Status200OK)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status404NotFound)]
     public async Task<IActionResult> Get(int id)
     {
         var task = await service.GetByIdAsync(id);
@@ -45,15 +45,17 @@ public class TasksController(ITaskService service) : ControllerBase
     /// Oppretter en ny oppgave.
     /// </summary>
     [HttpPost]
-    [ProducesResponseType(StatusCodes.Status201Created)]
-    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    [ProducesResponseType(typeof(TaskItem), StatusCodes.Status201Created)]
+    [ProducesResponseType(typeof(ProblemDetails), StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> Post(TaskItem task)
     {
         if (string.IsNullOrWhiteSpace(task.Title))
         {
-            return BadRequest(new
+            return BadRequest(new ProblemDetails
             {
-                message = "Title is required"
+                Title = "Validation error",
+                Detail = "Title is required",
+                Status = StatusCodes.Status400BadRequest
             });
         }
 
