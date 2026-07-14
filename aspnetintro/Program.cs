@@ -30,7 +30,7 @@ var app = builder.Build();
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
-    //app.MapOpenApi();
+    //app.MapOpenApi(); // http://localhost:5179/openapi/v1.json
     app.UseSwagger();
     app.UseSwaggerUI();
 }
