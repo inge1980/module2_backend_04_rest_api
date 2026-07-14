@@ -59,4 +59,53 @@ public class TasksController : ControllerBase
 
         return Ok(task);
     }
+
+
+    /// <summary>
+    /// Oppretter en ny oppgave.
+    /// </summary>
+    [HttpPost]
+    [ProducesResponseType(StatusCodes.Status201Created)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
+    public IActionResult Post([FromBody] TaskItem task)
+    {
+        // Enkel validering
+        if (string.IsNullOrWhiteSpace(task.Title))
+        {
+            return BadRequest(new
+            {
+                message = "Title is required"
+            });
+        }
+
+        if (task.DueDate.HasValue && task.DueDate < DateTime.Now)
+        {
+            return BadRequest(new
+            {
+                message = "Due date cannot be in the past"
+            });
+        }
+
+
+        // Generer ny ID
+        task.Id = tasks.Count > 0 
+            ? tasks.Max(t => t.Id) + 1 
+            : 1;
+
+
+        // Sett opprettelsestidspunkt
+        task.CreatedAt = DateTime.Now;
+
+
+        // Legg til i minnet
+        tasks.Add(task);
+
+
+        // Returner 201 Created
+        return CreatedAtAction(
+            nameof(Get),
+            new { id = task.Id },
+            task
+        );
+    }
 }

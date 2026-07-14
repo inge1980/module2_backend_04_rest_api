@@ -1,5 +1,5 @@
 // To use:
-// http://localhost:5179/weatherforecast
+// http://localhost:5179/tasks/
 // http://localhost:5179/swagger/index.html
 using System.Reflection;
 
@@ -21,7 +21,6 @@ builder.Services.AddSwaggerGen(options =>
 
 var app = builder.Build();
 
-
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -37,42 +36,4 @@ app.UseStaticFiles();
 app.MapFallbackToFile("index.html"); // evt. 404.html
 app.MapControllers();
 
-var summaries = new[]
-{
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
-
-app.MapGet("/weatherforecast", () =>
-{
-    var forecast =  Enumerable.Range(1, 5).Select(index =>
-        new WeatherForecast
-        (
-            DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-            Random.Shared.Next(-20, 55),
-            summaries[Random.Shared.Next(summaries.Length)]
-        ))
-        .ToArray();
-    return forecast;
-})
-   .WithName("GetWeatherForecast")
-   .WithSummary("Returns some weather")
-   .WithDescription("Simple test endpoint for weather");
-
-// <summary>
-// Henter en enkel testmelding.
-// </summary>
-// <returns>En tekststreng</returns>
-app.MapGet("/hello", () => new
-    {
-        Message = "Hello World"
-    })
-   .WithName("GetHello")
-   .WithSummary("Returns a greeting")
-   .WithDescription("Simple test endpoint for the world");
-
 app.Run();
-
-record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
-}
