@@ -1,10 +1,9 @@
 using aspnetintro.Model;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace aspnetintro.Controllers;
 
-[Route("/[controller]/")]
+[Route("api/[controller]/")]
 [ApiController]
 public class TasksController : ControllerBase
 {
